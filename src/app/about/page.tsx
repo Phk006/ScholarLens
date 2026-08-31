@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Search, Shield, Target, Radar, FileText, Bell } from "lucide-react";
+import { ArrowLeft, Search, Shield, Target, Radar, FileText, Globe } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -14,29 +14,68 @@ export default function AboutPage() {
 
       <h1 className="text-3xl font-bold text-slate-900">About ScholarLens</h1>
 
+      {/* Live Link Banner */}
+      <a
+        href="https://one-thing-i-would-specifically-tell.vercel.app"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-4 flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 transition hover:bg-emerald-100"
+      >
+        <Globe className="h-5 w-5 flex-shrink-0 text-emerald-600" />
+        <div>
+          <p className="text-sm font-semibold text-emerald-800">Live Application</p>
+          <p className="text-xs text-emerald-600">
+            one-thing-i-would-specifically-tell.vercel.app
+          </p>
+        </div>
+      </a>
+
       <div className="mt-8 space-y-8">
         <section>
           <h2 className="text-xl font-semibold text-slate-900">What is ScholarLens?</h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
-            ScholarLens helps students discover scholarships from verified sources,
-            understand eligibility requirements, identify why they do or do not
-            qualify, discover better alternatives, and track relevant opportunities.
+            ScholarLens is a scholarship discovery platform that automatically finds
+            relevant financial aid opportunities, checks your eligibility against
+            each one, and explains the results — all without you having to search
+            through dozens of government portals and deadline trackers yourself.
           </p>
           <p className="mt-2 text-sm leading-relaxed text-slate-600">
-            The core thesis: <strong>Don&apos;t make students search.
-            Make the system search for them.</strong>
+            <strong>Don&apos;t make students search. Make the system search for them.</strong>{" "}
+            That is the core idea. Most students miss scholarships not because they
+            are ineligible, but because they never found out the opportunity existed
+            in the first place. ScholarLens closes that gap.
           </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-semibold text-slate-900">How it works</h2>
+          <h2 className="text-xl font-semibold text-slate-900">How it helps you find scholarships seamlessly</h2>
           <div className="mt-4 space-y-4">
             {[
-              { icon: Target, title: "Student DNA", desc: "Build a quick, guided profile that captures your eligibility criteria." },
-              { icon: Search, title: "Discovery", desc: "ScholarLens scans verified scholarship sources for opportunities matching your profile." },
-              { icon: Target, title: "Eligibility Check", desc: "Deterministic rules (not AI) compare your profile against each scholarship's requirements." },
-              { icon: FileText, title: "Apply", desc: "We direct you to official application portals. We never submit applications on your behalf." },
-              { icon: Radar, title: "Radar", desc: "We monitor scholarship data for deadline changes, updated criteria, and new opportunities." },
+              {
+                icon: Target,
+                title: "Build your Student DNA",
+                desc: "Answer a few guided questions about your income, category, course, state, and academic record. This creates your eligibility profile in under 3 minutes.",
+              },
+              {
+                icon: Search,
+                title: "We find scholarships for you",
+                desc: "ScholarLens scans verified sources — the National Scholarship Portal, Ministry of Education, and recognised foundations — to find every opportunity that matches your profile. You do not need to know where to look.",
+              },
+              {
+                icon: Shield,
+                title: "Instant eligibility results",
+                desc: "Deterministic rules (not guesswork) compare your profile against each scholarship's real requirements. You see exactly why you qualify or don't, with clear explanations.",
+              },
+              {
+                icon: Radar,
+                title: "We keep watching",
+                desc: "The Scholarship Radar monitors sources for deadline changes, updated criteria, and new opportunities. You get notified when something changes — you do not have to keep checking back.",
+              },
+              {
+                icon: FileText,
+                title: "Track your applications",
+                desc: "Save scholarships, track application status, and manage deadlines from a single dashboard. We never submit applications on your behalf — we always direct you to the official portal.",
+              },
             ].map((item) => (
               <div key={item.title} className="flex items-start gap-3 rounded-lg border border-slate-100 p-4">
                 <item.icon className="mt-0.5 h-5 w-5 flex-shrink-0 text-emerald-600" />
@@ -50,11 +89,23 @@ export default function AboutPage() {
         </section>
 
         <section>
+          <h2 className="text-xl font-semibold text-slate-900">Why students miss scholarships</h2>
+          <p className="mt-3 text-sm leading-relaxed text-slate-600">
+            India has hundreds of government and private scholarships, but most
+            students only hear about 2 or 3. The rest stay invisible because they
+            are scattered across different portals, announced with short deadlines,
+            and written in dense bureaucratic language. ScholarLens aggregates them
+            in one place, translates the requirements into plain language, and
+            matches them to your profile automatically.
+          </p>
+        </section>
+
+        <section>
           <h2 className="text-xl font-semibold text-slate-900">Verified Sources</h2>
           <p className="mt-3 text-sm leading-relaxed text-slate-600">
-            ScholarLens uses real, verified scholarship source data. Every scholarship
-            record includes the source URL, source authority, verification status,
-            and last verification date.
+            Every scholarship record in ScholarLens includes the source URL,
+            source authority, verification status, and last verification date.
+            We only surface data from official and trusted sources.
           </p>
           <div className="mt-4 space-y-2">
             <a
@@ -100,6 +151,21 @@ export default function AboutPage() {
             scholarship portal before applying.
           </p>
         </section>
+
+        {/* Bottom CTA */}
+        <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+          <p className="text-sm font-semibold text-slate-900">
+            Ready to find scholarships made for you?
+          </p>
+          <a
+            href="https://one-thing-i-would-specifically-tell.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 inline-block rounded-lg bg-emerald-600 px-6 py-2.5 text-sm font-bold text-white transition hover:bg-emerald-700"
+          >
+            Open ScholarLens →
+          </a>
+        </div>
       </div>
     </div>
   );
