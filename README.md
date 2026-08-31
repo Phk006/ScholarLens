@@ -1,3 +1,4 @@
+
 # ScholarLens
 
 > **Don't make students search. Make the system search for them.**
