@@ -1,0 +1,114 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =============================================================================
+    // Helper functions
+    // =============================================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      // Admin verification must happen server-side
+      // Never trust client-provided admin claims
+      return false; // Placeholder — use Cloud Functions or Admin SDK
+    }
+
+    function isValidProfile() {
+      let data = request.resource.data;
+      return data.uid is string
+        && data.uid == request.auth.uid
+        && data.createdAt is string
+        && data.updatedAt is string;
+    }
+
+    // =============================================================================
+    // Users collection
+    // =============================================================================
+
+    match /users/{uid} {
+      // Users can only read their own record
+      allow read: if isOwner(uid);
+      // Only server-side processes can create/update user records
+      allow write: if false; // Admin SDK only
+
+      // =============================================================================
+      // Subcollections under users
+      // =============================================================================
+
+      // Saved scholarships
+      match /saved/{scholarshipId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // Applications
+      match /applications/{applicationId} {
+        allow read, write: if isOwner(uid);
+      }
+
+      // Notifications
+      match /notifications/{notificationId} {
+        allow read: if isOwner(uid);
+        allow write: if false; // Server-side only
+      }
+    }
+
+    // =============================================================================
+    // Profiles collection
+    // =============================================================================
+
+    match /profiles/{uid} {
+      // Users can read/write their own profile
+      allow read, write: if isOwner(uid) && isValidProfile();
+    }
+
+    // =============================================================================
+    // Scholarship master records (READ for all, WRITE for admin only)
+    // =============================================================================
+
+    match /scholarships/{scholarshipId} {
+      // Any authenticated user can read scholarship data
+      allow read: if isAuthenticated();
+      // Client cannot modify scholarship master records
+      allow write: if false; // Admin SDK / Cloud Functions only
+    }
+
+    // =============================================================================
+    // Eligibility results
+    // =============================================================================
+
+    match /eligibilityResults/{resultId} {
+      // Users can only read their own eligibility results
+      allow read: if isAuthenticated()
+        && resource.data.uid == request.auth.uid;
+      // Only server-side or the user can create results
+      allow create: if isAuthenticated()
+        && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    // =============================================================================
+    // Scholarship versions (read-only for authenticated users)
+    // =============================================================================
+
+    match /scholarshipVersions/{versionId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Admin SDK only
+    }
+
+    // =============================================================================
+    // Default: deny everything not explicitly allowed
+    // =============================================================================
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
